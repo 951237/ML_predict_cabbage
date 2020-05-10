@@ -43,48 +43,45 @@
     <!--Main layout-->
     <main>
         <div class="container">
-
             <!--Section: Main info-->
             <section class="mt-5 wow fadeIn">
-
                 <!--Grid row-->
                 <div class="row">
-
                     <!--Grid column-->
                     <div class="col-md-6 mb-4">
 
                         <!--데이터를 전송하기 위한 폼태그 적용 -->
                         <!--폼 테그는 div 태그에 속하도록  -->
                         <!-- Default form group -->
-                        <form action="/" method="post">
+                        <form id = "my_form" action="/" method="post">
                             <h3 class="h3 mb-3" align="center">기상정보 입력</h3>
                             <!-- Default input -->
                             <div class="form-group">
                                 <label for="formGroupExampleInput">평균 기온</label>
-                                <input onkeyup="formChanged()" onchange="formChanged()" type="text" class="form-control" id='avg_temp' placeholder="평균 기온을 입력하세요.">
+                                <input type="text" class="form-control" id='avg_temp' placeholder="평균 기온을 입력하세요.">
                             </div>
 
                             <!-- Default input -->
                             <div class="form-group">
                                 <label for="formGroupExampleInput">최저 기온</label>
-                                <input onkeyup="formChanged()" onchange="formChanged()" type="text" class="form-control" id="min_temp" placeholder="최저 기온을 입력하세요.">
+                                <input type="text" class="form-control" id="min_temp" placeholder="최저 기온을 입력하세요.">
                             </div>
 
                             <!-- Default input -->
                             <div class="form-group">
                                 <label for="formGroupExampleInput">최고 기온</label>
-                                <input onkeyup="formChanged()" onchange="formChanged()" type="text" class="form-control" id="max_temp" placeholder="최고 기온을 입력하세요.">
+                                <input type="text" class="form-control" id="max_temp" placeholder="최고 기온을 입력하세요.">
                             </div>
 
                             <!-- Default input -->
                             <div class="form-group">
                                 <label for="formGroupExampleInput">강수량</label>
-                                <input onkeyup="formChanged()" onchange="formChanged()" type="text" class="form-control" id="rain_fall" placeholder="강수량을 입력하세요.">
+                                <input type="text" class="form-control" id="rain_fall" placeholder="강수량을 입력하세요.">
                             </div>
                         </form>
                         <!-- Default form group -->
                         <div class="col-auto" align="right">
-                            <button type="submit" class="btn btn-primary mb-0">예상하기</button>
+                            <button type="submit" onclick="formChanged()" class="btn btn-primary mb-0">예상하기</button>
                         </div>
                         </form>
                     </div>
@@ -103,12 +100,9 @@
 
                     </div>
                     <!--Grid column-->
-
                 </div>
                 <!--Grid row-->
-
             </section>
-
         </div>
     </main>
     <!--Main layout-->
@@ -118,19 +112,21 @@
     <script type="text/javascript">
         import * as tf from '@tensorflow/tfjs';
 
-        const model = await tf.loadLayersModel('model.json');
-        
         function formChanged() {
+            console.log('hello')
             var avg_temp = document.getElementById('avg_temp');
             var max_temp = document.getElementById('max_temp');
             var min_temp = document.getElementById('min_temp');
             var rain_fall = document.getElementById('rain_fall');
+
+            const model = await tf.loadLayersModel('model.json');
+
+            pred = model.predict(np.array([avg_temp, min_temp, max_temp, rain_fall]).reshape(1, 4));
+
+            message = '배추의 예측결과는' + pred + '원 입니다.';
+            $('.result-message').html(message);
         }
 
-        pred = model.predict(np.array([avg_temp, min_temp, max_temp, rain_fall]).reshape(1, 4));
-
-        message = '배추의 예측결과는' + pred + '원 입니다.';
-        $('.result-message').html(message);
 
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
