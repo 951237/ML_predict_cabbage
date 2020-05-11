@@ -53,12 +53,12 @@
                         <!--데이터를 전송하기 위한 폼태그 적용 -->
                         <!--폼 테그는 div 태그에 속하도록  -->
                         <!-- Default form group -->
-                        <form id = "my_form" action="/" method="post">
+                        <form id="my_form" action="/" method="post">
                             <h3 class="h3 mb-3" align="center">기상정보 입력</h3>
                             <!-- Default input -->
                             <div class="form-group">
                                 <label for="formGroupExampleInput">평균 기온</label>
-                                <input type="text" class="form-control" id='avg_temp' placeholder="평균 기온을 입력하세요.">
+                                <input type="text" class="form-control" id="avg_temp" placeholder="평균 기온을 입력하세요.">
                             </div>
 
                             <!-- Default input -->
@@ -109,23 +109,34 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     <script type="text/javascript">
-        import * as tf from '@tensorflow/tfjs';
+        // 참고 사이트 : https://medium.com/@mandava807/importing-a-keras-model-into-tensorflow-js-b09600a95e40
+
+
+        // awit 관련 참고 : https://stackoverflow.com/questions/49432579/await-is-only-valid-in-async-function
+        model = tf.loadLayersModel('model.json')
 
         function formChanged() {
-            console.log('hello')
-            var avg_temp = document.getElementById('avg_temp');
-            var max_temp = document.getElementById('max_temp');
-            var min_temp = document.getElementById('min_temp');
-            var rain_fall = document.getElementById('rain_fall');
+            // 어레이 텐서로 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/convert_to_tensor
+            var avg_temp = document.getElementById('avg_temp').value;
+            var min_temp = document.getElementById('min_temp').value;
+            var max_temp = document.getElementById('max_temp').value;
+            var rain_fall = document.getElementById('rain_fall').value;
 
-            const model = await tf.loadLayersModel('model.json');
+            data = [avg_temp, min_temp, max_temp, rain_fall]
+            tensor = tf.tensor(data, dtype=tf.float32)
+            console.log(tensor)
 
-            pred = model.predict(np.array([avg_temp, min_temp, max_temp, rain_fall]).reshape(1, 4));
+            pred = model.predict(tensor);
 
-            message = '배추의 예측결과는' + pred + '원 입니다.';
+            message = '배추의 예측결과는 ' + pred + '원 입니다.';
             $('.result-message').html(message);
+
+            // 텐서 모양 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/reshape
+
         }
+
 
 
     </script>
