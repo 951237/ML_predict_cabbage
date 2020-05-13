@@ -79,10 +79,10 @@
                                 <label for="formGroupExampleInput4">강수량</label>
                                 <input type="text" class="form-control" id="rain_fall" placeholder="강수량을 입력하세요.">
                             </div>
-                        <!-- Default form group -->
-                        <div class="col-auto" align="right">
-                            <button type="submit" onclick="formChanged()" class="btn btn-primary mb-0">예상하기</button>
-                        </div>
+                            <!-- Default form group -->
+                            <div class="col-auto" align="right">
+                                <button type="submit" onclick="formChanged()" class="btn btn-primary mb-0">예상하기</button>
+                            </div>
                         </form>
                     </div>
                     <!--Grid column-->
@@ -115,7 +115,7 @@
 
 
         // awit 관련 참고 : https://stackoverflow.com/questions/49432579/await-is-only-valid-in-async-function
-        model = tf.loadLayersModel('model.json')
+        // model = tf.loadLayersModel('model.json')
 
         function formChanged() {
             // 어레이 텐서로 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/convert_to_tensor
@@ -124,21 +124,18 @@
             var max_temp = document.getElementById('max_temp').value;
             var rain_fall = document.getElementById('rain_fall').value;
 
-            data = [avg_temp, min_temp, max_temp, rain_fall]
-            tensor = tf.tensor(data, dtype=tf.float32)
-            console.log(tensor)
+            // data = [avg_temp, min_temp, max_temp, rain_fall]
+            // tensor = tf.tensor(data, dtype=tf.float32)
+            console.log(avg_temp)
 
-            pred = model.predict(tensor);
+            // pred = model.predict(tensor);
 
-            message = '배추의 예측결과는 ' + pred + '원 입니다.';
-            $('.result-message').html(message);
+            // message = '배추의 예측결과는 ' + avg_temp + '원 입니다.';
+            // $('.result-message').html(message);
 
             // 텐서 모양 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/reshape
 
         }
-
-
-
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
