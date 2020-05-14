@@ -17,12 +17,12 @@
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
         <div class="container">
-    
+
             <!-- Brand -->
             <a class="navbar-brand" href="" target="_blank">
                 <strong>951237</strong>
             </a>
-    
+
             <!-- Collapse -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,15 @@
         </div>
     </nav>
     <!-- Navbar -->
-
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">배추가격 예측 시스템</h1>
-            <p></p>
-            <p> 기상청 전국 기온 및 강수량 데이터와 전국 월별 배추 가격 빅데이터를 분석하여 시계열 수치 예측을 수행합니다.
+    <section>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">배추가격 예측 시스템</h1>
+                <p></p>
+                <p> 기상청 전국 기온 및 강수량 데이터와 전국 월별 배추 가격 빅데이터를 분석하여 시계열 수치 예측을 수행합니다.
+            </div>
         </div>
-    </div>
+    </section>
 
     <!--Main layout-->
     <main>
@@ -54,7 +55,9 @@
                         <!--폼 테그는 div 태그에 속하도록  -->
                         <!-- Default form group -->
                         <form id="my_form" action="/" method="post">
-                            <h3 class="h3 mb-3" align="center">기상정보 입력</h3>
+                            <h3 class="h3 mb-3">
+                                <center>기상정보 입력</center>
+                            </h3>
 
                             <!-- Default input -->
                             <div class="form-group">
@@ -79,11 +82,11 @@
                                 <label for="formGroupExampleInput4">강수량</label>
                                 <input type="text" class="form-control" id="rain_fall" placeholder="강수량을 입력하세요.">
                             </div>
-                            <!-- Default form group -->
-                            <div class="col-auto" align="right">
-                                <button type="submit" onclick="formChanged()" class="btn btn-primary mb-0">예상하기</button>
-                            </div>
+                            <!-- Default form Vgroup -->
                         </form>
+                        <div class="col-auto" center>
+                            <button type="submit" onclick="formChanged()" class="btn btn-primary mb-0">예상하기</button>
+                        </div>
                     </div>
                     <!--Grid column-->
 
@@ -91,12 +94,16 @@
                     <div class="col-md-6 mb-4">
 
                         <!-- Main heading -->
-                        <h3 class="h3 mb-3" align="center">배추가격 예측 결과</h3>
+                        <h3 class="h3 mb-3">
+                            <center>배추가격 예측 결과</center>
+                        </h3>
                         <!-- Main heading -->
 
                         <hr>
                         <br>
-                        <h4 align="center" class='result-message'></h4>
+                        <h4 class='result-message'>
+                            <center></center>
+                        </h4>
 
                     </div>
                     <!--Grid column-->
@@ -113,9 +120,9 @@
     <script type="text/javascript">
         // 참고 사이트 : https://medium.com/@mandava807/importing-a-keras-model-into-tensorflow-js-b09600a95e40
 
-
         // awit 관련 참고 : https://stackoverflow.com/questions/49432579/await-is-only-valid-in-async-function
-        // model = tf.loadLayersModel('model.json')
+
+        model = tf.loadLayersModel(URL)
 
         function formChanged() {
             // 어레이 텐서로 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/convert_to_tensor
@@ -124,14 +131,14 @@
             var max_temp = document.getElementById('max_temp').value;
             var rain_fall = document.getElementById('rain_fall').value;
 
-            // data = [avg_temp, min_temp, max_temp, rain_fall]
-            // tensor = tf.tensor(data, dtype=tf.float32)
+            data = [avg_temp, min_temp, max_temp, rain_fall]
+            tensor = tf.tensor(data, dtype = tf.float32)
             console.log(avg_temp)
 
-            // pred = model.predict(tensor);
+            pred = model.predict(tensor);
 
-            // message = '배추의 예측결과는 ' + avg_temp + '원 입니다.';
-            // $('.result-message').html(message);
+            message = '배추의 예측결과는 ' + pred + '원 입니다.';
+            $('.result-message').html(message);
 
             // 텐서 모양 바꾸기 : https://www.tensorflow.org/api_docs/python/tf/reshape
 
